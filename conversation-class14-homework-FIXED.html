@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<html><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/><title>Conversation Class 14 Homework</title><style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:Arial,sans-serif;background:#5B5091;padding:12px;margin:0;font-size:16px;line-height:1.5}
+.card{background:#fff;max-width:920px;margin:0 auto 14px;padding:18px;border-radius:14px}
+h1{color:#5B5091;font-size:1.5em;margin:0 0 10px;line-height:1.2}
+h2{color:#5B5091;font-size:1.2em;margin:0 0 12px}
+p{margin:0 0 10px}
+label{display:block;font-weight:700;margin:10px 0 6px;font-size:0.95em}
+input[type=text],textarea,select{width:100%;padding:14px;border:2px solid #ddd;border-radius:10px;font-size:16px;font-family:inherit;background:#fff}
+textarea{min-height:120px;resize:vertical}
+button{background:#5B5091;color:#fff;border:none;padding:14px 18px;border-radius:10px;cursor:pointer;margin-top:12px;font-size:16px;font-weight:600;font-family:inherit;width:100%;-webkit-appearance:none}
+button:active{opacity:0.85}
+button[disabled]{opacity:0.6;cursor:not-allowed}
+.option{padding:14px;border:2px solid #ddd;border-radius:10px;margin:8px 0;cursor:pointer;min-height:48px;display:flex;align-items:center;font-size:0.95em;line-height:1.4}
+.option:active{background:#f1ecff}
+.option.selected{border-color:#5B5091;background:#f1ecff;font-weight:600}
+.word{display:inline-block;padding:10px 14px;border:2px solid #ddd;border-radius:8px;margin:4px;cursor:pointer;font-size:0.95em;min-height:42px;line-height:1.2}
+.word:active{background:#f1ecff}
+.word.selected{border-color:#5B5091;background:#f1ecff}
+.word.used{opacity:0.45;pointer-events:none}
+.drop{min-height:48px;border:2px dashed #bbb;border-radius:8px;padding:10px;margin:6px 0;background:#fafafa;display:flex;align-items:center;font-size:0.95em}
+.drop:not(:empty){background:#f1ecff;border-style:solid;border-color:#5B5091}
+.record-btn{width:90px;height:90px;border-radius:50%;background:#fff;border:4px solid #5B5091;cursor:pointer;margin:16px auto;display:flex;align-items:center;justify-content:center}
+.record-btn.recording{border-color:#ef4444}
+.record-dot{width:26px;height:26px;background:#5B5091;border-radius:50%}
+.record-btn.recording .record-dot{background:#ef4444;border-radius:4px;width:22px;height:22px}
+.timer{text-align:center;font-size:24px;font-weight:700;color:#5B5091;margin-top:8px}
+.status{text-align:center;color:#666;margin-top:8px;font-size:0.9em}
+audio{width:100%;margin-top:14px}
+.transcript-box{background:#f8f9fa;border-radius:10px;padding:14px;margin-top:14px;border:1px solid #eee;font-size:0.92em;line-height:1.5;max-height:200px;overflow-y:auto}
+.hidden{display:none}
+.score{background:linear-gradient(135deg,#5B5091,#7B6DB5);color:#fff;padding:24px 18px;text-align:center}
+.score h2{color:#fff !important;font-size:1.6em;line-height:1.2;margin:0 0 14px}
+.score #finalPct{font-size:2.4em;font-weight:700;margin:0 0 12px}
+.score #studentDisplay{font-size:1.2em;font-weight:600;margin:0 0 14px;word-break:break-word}
+.score #scoreLine{font-size:0.95em;line-height:1.7;margin:0 0 16px;color:#f5f2ff}
+.score #submitStatus{font-size:0.95em;line-height:1.5;margin:0 0 14px;color:#fff !important;opacity:0.95;word-break:break-word}
+.score button{background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);padding:14px 22px;font-size:1em;border-radius:12px;box-shadow:none;color:#fff}
+.score button:disabled{opacity:0.7}
+.small{color:#666;font-size:0.85em}
+.tip{background:#f8f6ff;border-left:4px solid #5B5091;padding:12px 14px;border-radius:8px;margin-top:12px;font-size:0.9em}
+.tip ul{margin:6px 0 0 18px;padding:0}
+.tip li{margin-bottom:4px}
+ul{margin:8px 0 8px 20px}
+strong{font-weight:700}
+
+/* TABLET / DESKTOP */
+@media(min-width:600px){
+  body{padding:24px;font-size:17px}
+  .card{padding:28px;margin:0 auto 18px}
+  h1{font-size:1.8em}
+  h2{font-size:1.4em}
+  .option,.word{font-size:1em}
+  button{width:auto;min-width:160px;padding:14px 26px}
+  .score{padding:36px 40px}
+  .score h2{font-size:2.2em}
+  .score #finalPct{font-size:3em}
+  .score #studentDisplay{font-size:1.6em}
+  .score #scoreLine{font-size:1.15em}
+  .score #submitStatus{font-size:1.05em}
+  .record-btn{width:100px;height:100px}
+  .record-dot{width:30px;height:30px}
+}
+
+/* SMALL PHONES (< 380px) */
+@media(max-width:380px){
+  body{padding:8px;font-size:15px}
+  .card{padding:14px;margin:0 auto 10px}
+  h1{font-size:1.3em}
+  h2{font-size:1.1em}
+  .option,.word{padding:12px;font-size:0.92em}
+  button{padding:13px 16px;font-size:15px}
+  .record-btn{width:80px;height:80px}
+  .timer{font-size:22px}
+  .score{padding:20px 14px}
+  .score h2{font-size:1.4em}
+  .score #finalPct{font-size:2em}
+}
+</style></head><body>
+<div class="card" id="introCard"><h1>Conversation Class 14 Homework</h1><p>Week 7 • Consumer Rights • Return Policies</p><label>Your Full Name</label><input id="studentName" placeholder="Enter your name" type="text"/><input type="hidden" id="teacherName" value=""/><label>Your Class</label><select id="className" onchange="setTeacher(this)"><option value="">-- Select your class --</option><option value="Conversation Session 14 - 3094" data-teacher="Laura Ebel">Conversation Session 14 - 3094 (Mon/Wed 9:00 AM)</option></select><button onclick="startQuiz()">Start Homework</button></div>
+<div class="hidden" id="main">
+<div class="card" id="s1"><h2>1. Conversation Awareness</h2><p><strong>Understanding Return Policies</strong></p><p>Return policies explain when and how customers can return products after buying them.</p><p>Some stores offer refunds, while others provide store credit or exchanges.</p><p>Keeping receipts and original packaging can make returns easier, especially when there is a return window or a warranty.</p><div id="readingQuestions"></div><button onclick="checkS1()">Continue</button></div>
+<div class="card hidden" id="s2"><h2>2. Expressions in Context</h2><div id="wordBank"></div><div id="vocabDrops"></div><button onclick="checkS2()">Continue</button></div>
+<div class="card hidden" id="s3"><h2>3. Language Use</h2><div><label>Write one sentence asking about a return policy.</label><textarea id="lu1"></textarea></div><div><label>Write a sentence requesting a refund.</label><textarea id="lu2"></textarea></div><div><label>Write one sentence explaining why a product should be replaced.</label><textarea id="lu3"></textarea></div><div class="hidden" id="luFeedback"></div><button id="luBtn" onclick="gradeLanguageUse()">Get Feedback</button><button class="hidden" id="luNext" onclick="show('s4')">Continue</button></div>
+<div class="card hidden" id="s4"><h2>4. Writing</h2><p>Write up to 9 sentences as a short complaint email about a defective product. Explain the problem clearly and say what resolution you want.</p><div class="tip"><p><strong>To get a good score:</strong></p><ul><li>Write full sentences</li><li>Answer the question clearly</li><li>Use simple, correct English</li></ul></div><textarea id="writing"></textarea><p class="small">Words: <span id="wc">0</span></p><div class="hidden" id="wFeedback"></div><button id="wBtn" onclick="checkWriting()">Get Feedback</button><button class="hidden" id="wNext" onclick="show('s5')">Continue</button></div>
+<div class="card hidden" id="s5"><h2>5. Speaking</h2><p>Explain a store return policy and whether you think it is fair.</p><div class="tip"><p><strong>Important:</strong> If you do not answer, your speaking score will be 0.</p></div><div class="record-btn" id="recBtn" onclick="toggleRec()"><div class="record-dot"></div></div><div class="timer" id="timer">0:00</div><div class="status" id="recStatus">Click to start recording</div><audio class="hidden" controls="" id="audio"></audio><div class="transcript-box hidden" id="transcriptBox"></div><div class="hidden" id="sFeedback"></div><button disabled="" id="sBtn" onclick="checkSpeaking()">Finish Homework</button></div>
+<div class="card score hidden" id="results"><h2 style="color:white">Homework Complete</h2><p id="finalPct"></p><p id="studentDisplay"></p><p id="scoreLine"></p><p class="small" id="submitStatus" style="color:#fff;opacity:.95"></p><button id="submitTeacherBtn" onclick="submitToTeacher(true)">Submit to Teacher Again</button></div>
+</div>
+<script>
+const FORM_RESPONSE="https://docs.google.com/forms/d/e/1FAIpQLSdpV-n3g-5-UdGt7H7_dqgoDbSRkWwITqJgcov-njtV8ft6_g/formResponse";
+const readingQBank=[{"q": "What do return policies explain?", "opts": ["When and how customers can return products", "How to manufacture products", "Which stores have the lowest prices"], "correct": 0}, {"q": "What can customers receive when they return an item?", "opts": ["A refund, store credit, or an exchange", "Always cash only", "Nothing — returns are never accepted"], "correct": 0}, {"q": "What can make returning a product easier?", "opts": ["Keeping the receipt and original packaging", "Throwing the receipt away immediately", "Waiting several months before returning"], "correct": 0}, {"q": "What is a return window?", "opts": ["The time period when returns are accepted", "A glass display in the front of the store", "A discount offered only on weekends"], "correct": 0}];
+const vocabPairs=[{"word": "return window", "def": "the time period when returns are accepted"}, {"word": "refund", "def": "cash or credit back to your payment method"}, {"word": "exchange", "def": "getting a different item instead of money back"}, {"word": "final sale", "def": "an item that cannot be returned or exchanged"}, {"word": "restocking fee", "def": "a fee charged when returning an item"}, {"word": "warranty", "def": "coverage for manufacturing defects for a specific time period"}];
+const languageSignals=["return", "refund", "exchange", "store credit", "warranty", "receipt", "defective", "final sale", "restocking", "proof of purchase", "original packaging", "return window", "policy", "manufacturing defect", "replace", "complaint"];
+const classLabel="Conversation Class 14";
+let name='', scores={l:0,v:0,w:0,s:0,g:0}, readingAnswers=[], selectedWord=null, writingText='', spokenText='', persistedSpokenText='', isRec=false, mediaRec=null, chunks=[], recTime=0, recTimer=null, speechRec=null;
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
+function show(id){['s1','s2','s3','s4','s5','results'].forEach(x=>document.getElementById(x).classList.add('hidden'));document.getElementById(id).classList.remove('hidden');window.scrollTo(0,0);}
+function setTeacher(sel){var opt=sel.options[sel.selectedIndex];var th=document.getElementById('teacherName');if(th)th.value=opt?(opt.getAttribute('data-teacher')||''):'';}
+let selectedClassLabel='';
+function startQuiz(){name=document.getElementById('studentName').value.trim();const cls=document.getElementById('className').value;if(!name){alert('Please enter your name');return;}if(!cls){alert('Please select your class');return;}selectedClassLabel=cls;initQuestions();document.getElementById('introCard').classList.add('hidden');document.getElementById('main').classList.remove('hidden');show('s1');}
+function selectOpt(el){el.parentElement.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');}
+function initQuestions(){
+const qset=shuffle([...readingQBank]).slice(0,3); let qhtml='';
+qset.forEach((q,i)=>{const opts=q.opts.map((t,idx)=>({text:t,isCorrect:idx===q.correct}));shuffle(opts);readingAnswers[i]=opts.findIndex(o=>o.isCorrect);qhtml += `<div><p><strong>${i+1}. ${q.q}</strong></p>`;opts.forEach((opt,j)=>{qhtml += `<div class="option" data-v="${j}" onclick="selectOpt(this)">${opt.text}</div>`;});qhtml += `</div>`;});
+document.getElementById('readingQuestions').innerHTML=qhtml;
+let bank='', drops=''; const pairs=shuffle([...vocabPairs]); const words=shuffle(pairs.map(p=>p.word));
+words.forEach(w=>bank += `<span class="word" onclick="pickWord(this)">${w}</span>`);
+pairs.forEach(p=>drops += `<div><p>${p.def}</p><div class="drop" data-a="${p.word}" onclick="dropWord(this)"></div></div>`);
+document.getElementById('wordBank').innerHTML=bank; document.getElementById('vocabDrops').innerHTML=drops;}
+function checkS1(){let c=0;document.querySelectorAll('#readingQuestions > div').forEach((q,i)=>{const s=q.querySelector('.option.selected');if(s&&parseInt(s.dataset.v)===readingAnswers[i])c++;});scores.l=c;show('s2');}
+function pickWord(el){document.querySelectorAll('.word').forEach(w=>w.classList.remove('selected'));el.classList.add('selected');selectedWord=el;}
+function dropWord(target){if(!selectedWord||target.textContent.trim())return;target.textContent=selectedWord.textContent;target.classList.add('filled');selectedWord.classList.add('used');selectedWord.classList.remove('selected');selectedWord=null;}
+function checkS2(){let c=0;document.querySelectorAll('.drop').forEach(d=>{if(d.textContent===d.dataset.a)c++;});scores.v=c;show('s3');}
+function gradeLanguageUse(){const a1=(document.getElementById('lu1').value||'').trim();const a2=(document.getElementById('lu2').value||'').trim();const a3=(document.getElementById('lu3').value||'').trim();const joined=(a1+' '+a2+' '+a3).toLowerCase();let score=0, fb=[];if(a1.split(/\s+/).filter(Boolean).length>=4) score+=2; else fb.push('Task 1 needs a fuller sentence.');if(a2.split(/\s+/).filter(Boolean).length>=6) score+=3; else fb.push('Task 2 needs a more developed response.');if(a3.split(/\s+/).filter(Boolean).length>=6) score+=3; else fb.push('Task 3 needs a more natural complete reply.');const hits = languageSignals.filter(x=>joined.includes(x)).length;score += Math.min(4, hits);if(hits < 2) fb.push('Use more target expressions from the lesson.');scores.g=Math.min(8,score);document.getElementById('luFeedback').innerHTML='<b>Score: '+scores.g+'/8</b><br>'+(fb.length?fb.map(x=>'• '+x).join('<br>'):'• Good use of the lesson language.');document.getElementById('luFeedback').classList.remove('hidden');document.getElementById('luBtn').classList.add('hidden');document.getElementById('luNext').classList.remove('hidden');}
+document.addEventListener('DOMContentLoaded',()=>{document.getElementById('writing').addEventListener('input',function(){document.getElementById('wc').textContent=this.value.trim().split(/\s+/).filter(Boolean).length;});});
+function normalizeEvalText(text){return (text||'').toLowerCase().replace(/[^a-z0-9\s']/g,' ').replace(/\s+/g,' ').trim();}
+function getMeaningfulWords(text){return normalizeEvalText(text).split(/\s+/).filter(w=>w && !/^\d+$/.test(w));}
+function isNonsenseText(text){const raw=(text||'').trim();if(!raw)return true;const normalized=normalizeEvalText(raw);const words=getMeaningfulWords(raw);if(words.length<4)return true;const uniqueWords=new Set(words);const uniqueRatio=uniqueWords.size/words.length;const longWords=words.filter(w=>w.length>=3).length;const repeatedRuns=/(\b[a-z]{2,}\b)(?:\s+\1){2,}/i.test(normalized);const fillerOnly=words.every(w=>['bla','blah','blabla','hello','hi','test','ok','okay','yes','no'].includes(w));const hasPromptLink=languageSignals.some(x=>normalized.includes(normalizeEvalText(x)));if(fillerOnly)return true;if(repeatedRuns)return true;if(longWords<3)return true;if(uniqueRatio<0.45)return true;if(words.length>=6 && !hasPromptLink)return true;return false;}
+function checkWriting(){writingText=document.getElementById('writing').value||'';const raw=writingText.trim();const lower=raw.toLowerCase();const words=raw.split(/\s+/).filter(Boolean);const wc=words.length;const feedback=[];let score=0;if(wc===0||isNonsenseText(raw)){scores.w=0;document.getElementById('wFeedback').innerHTML='<b>Score: 0/20</b><br>Please write a relevant response in complete sentences. Blank, one-letter, filler, or nonsense text receives 0.';document.getElementById('wFeedback').classList.remove('hidden');document.getElementById('wBtn').classList.add('hidden');document.getElementById('wNext').classList.remove('hidden');return;}if(wc>=60)score+=7;else if(wc>=40)score+=6;else if(wc>=20)score+=4;else score+=2;const sentences=raw.split(/[.!?]+/).map(s=>s.trim()).filter(Boolean);const fullSentences=sentences.filter(s=>s.split(/\s+/).length>=4).length;if(fullSentences>=4)score+=6;else if(fullSentences>=2)score+=4;else if(fullSentences>=1)score+=2;else feedback.push('Try to write in full sentences.');const rel=languageSignals.filter(x=>lower.includes(x)).length;if(rel>=4)score+=4;else if(rel>=2)score+=3;else if(rel>=1)score+=1;else feedback.push('Connect your answer more clearly to the topic.');scores.w=Math.max(0,Math.min(20,Math.round(score)));document.getElementById('wFeedback').innerHTML='<b>Score: '+scores.w+'/20</b><br>'+(feedback.length?feedback.map(x=>'• '+x).join('<br>'):'• Your response is relevant and understandable.');document.getElementById('wFeedback').classList.remove('hidden');document.getElementById('wBtn').classList.add('hidden');document.getElementById('wNext').classList.remove('hidden');}
+function startSpeechRecognition(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){const box=document.getElementById('transcriptBox');if(box){box.textContent='⚠ Your browser does not support live transcription. Please use Chrome or Safari. Audio will still be recorded.';box.classList.remove('hidden');}return;}speechRec=new SR();speechRec.continuous=true;speechRec.interimResults=true;speechRec.lang='en-US';speechRec.onresult=function(event){var sessionFinal='';var interimText='';for(var i=0;i<event.results.length;i++){var t=event.results[i][0].transcript;if(event.results[i].isFinal){sessionFinal+=t+' ';}else{interimText+=t;}}speechRec._sessionFinal=sessionFinal;spokenText=(persistedSpokenText+sessionFinal+interimText).trim();var box=document.getElementById('transcriptBox');if(box&&spokenText){box.textContent='Transcript: '+spokenText;box.classList.remove('hidden');}};speechRec.onerror=function(event){if(event.error==='not-allowed'||event.error==='audio-capture'||event.error==='service-not-allowed'){var box=document.getElementById('transcriptBox');if(box){box.textContent='⚠ Microphone permission denied or unavailable. Please allow microphone access and try again.';box.classList.remove('hidden');}}};speechRec.onend=function(){if(speechRec&&speechRec._sessionFinal){persistedSpokenText+=speechRec._sessionFinal;speechRec._sessionFinal='';}if(isRec){try{speechRec.start();}catch(err){}}};try{speechRec.start();}catch(e){}}
+function stopSpeechRecognition(){if(speechRec){if(speechRec._sessionFinal){persistedSpokenText+=speechRec._sessionFinal;speechRec._sessionFinal='';}speechRec.onend=null;try{speechRec.stop();}catch(e){}speechRec=null;}spokenText=persistedSpokenText.trim();}
+async function toggleRec(){if(!isRec){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){const box=document.getElementById('transcriptBox');if(box){box.textContent='⚠ Speech recognition not supported. Please use Chrome or Safari.';box.classList.remove('hidden');}return;}persistedSpokenText='';spokenText='';const box=document.getElementById('transcriptBox');if(box){box.textContent='Listening... start speaking.';box.classList.remove('hidden');}isRec=true;recTime=0;document.getElementById('recBtn').classList.add('recording');document.getElementById('recStatus').textContent='Recording... Click again to stop';document.getElementById('timer').textContent='0:00';recTimer=setInterval(()=>{recTime++;document.getElementById('timer').textContent=Math.floor(recTime/60)+':'+String(recTime%60).padStart(2,'0');},1000);startSpeechRecognition();}else{stopSpeechRecognition();clearInterval(recTimer);isRec=false;document.getElementById('recBtn').classList.remove('recording');document.getElementById('recStatus').textContent='Recording saved!';document.getElementById('sBtn').disabled=false;}}
+function checkSpeaking(){const nonsenseSpeaking=recTime<3||isNonsenseText(spokenText);if(nonsenseSpeaking){scores.s=0;document.getElementById('sFeedback').innerHTML='<b>Score: 0/20</b><br>Please record a relevant speaking response. Blank, extremely short, or nonsense speech receives 0.';document.getElementById('sFeedback').classList.remove('hidden');submitFinal();return;}scores.s=recTime>=40?20:recTime>=28?16:recTime>=18?12:6;document.getElementById('sFeedback').innerHTML='<b>Score: '+scores.s+'/20</b><br>'+'Speaking is scored mainly on fluency, relevance, and your ability to answer the prompt naturally.';document.getElementById('sFeedback').classList.remove('hidden');submitFinal();}
+function submitFinal(){const total=scores.l+scores.v+scores.w+scores.s+scores.g;document.getElementById('finalPct').textContent=Math.round(total/57*100)+'%';document.getElementById('studentDisplay').textContent=name;document.getElementById('scoreLine').textContent=`Awareness ${scores.l}/3 • Expressions ${scores.v}/6 • Writing ${scores.w}/20 • Speaking ${scores.s}/20 • Language Use ${scores.g}/8`;show('results');setTimeout(()=>submitToTeacher(false),300);}let hasAutoSubmittedToTeacher=false;function buildTeacherFields(){const total=scores.l+scores.v+scores.w+scores.s+scores.g;const totalPct=Math.round(total/57*100)+'%';return {'entry.154629934':name,'entry.771629595':selectedClassLabel||classLabel,'entry.1564061356':'14','entry.1994438750':scores.l+'/3','entry.1169985852':scores.v+'/6','entry.66378887':scores.w+'/20','entry.665897330':scores.s+'/20','entry.1528226896':scores.g+'/8','entry.543147037':totalPct,'entry.301386877':writingText||'','entry.1035810181':spokenText||'No transcript captured','entry.1451249480':document.getElementById('teacherName').value||'Laura Ebel'};}function postTeacherForm(targetName){
+  const fields=buildTeacherFields();
+  const formData=new FormData();
+  Object.keys(fields).forEach(k=>formData.append(k,fields[k]));
+  // SAFETY NET: Save backup to localStorage
+  try{
+    const backup={...fields,timestamp:new Date().toISOString(),source:'conversation-class-14'};
+    localStorage.setItem('SQA_BACKUP_'+Date.now(),JSON.stringify(backup));
+  }catch(e){}
+  // Retry logic - 3 attempts
+  let attempt=0;
+  const maxAttempts=3;
+  function trySubmit(){
+    attempt++;
+    const status=document.getElementById('submitStatus');
+    if(status)status.textContent='Submitting... attempt '+attempt+' of '+maxAttempts;
+    const controller=new AbortController();
+    const timeout=setTimeout(()=>controller.abort(),10000);
+    fetch(FORM_RESPONSE,{method:'POST',mode:'no-cors',body:formData,signal:controller.signal})
+    .then(()=>{
+      clearTimeout(timeout);
+      if(status){status.textContent='✅ Submitted to teacher.';status.style.color='#fff';}
+    })
+    .catch(()=>{
+      clearTimeout(timeout);
+      if(attempt<maxAttempts){
+        if(status)status.textContent='Attempt '+attempt+' failed. Retrying in 2s...';
+        setTimeout(trySubmit,2000);
+      }else{
+        if(status){
+          status.innerHTML='⚠️ Submission failed. <a href="mailto:patricia@sqaeducation.org?subject='+encodeURIComponent('Conversation Class 14 Results - '+name)+'&body='+encodeURIComponent('Student: '+name+'\nClass: '+(selectedClassLabel||classLabel)+'\nTeacher: '+(document.getElementById('teacherName').value||'Laura Ebel')+'\nSession: 14\nReading: '+scores.l+'/3\nVocab: '+scores.v+'/6\nWriting: '+scores.w+'/20\nSpeaking: '+scores.s+'/20\nLanguage Use: '+scores.g+'/8\n\nWriting Response:\n'+(writingText||'')+'\n\nSpeaking Transcript:\n'+(spokenText||''))+'" style="color:#fff;text-decoration:underline">📧 Click here to email your results</a>';
+          status.style.color='#fff';
+        }
+      }
+    });
+  }
+  trySubmit();
+}function submitToTeacher(openConfirmationTab){
+  const status=document.getElementById('submitStatus');
+  const btn=document.getElementById('submitTeacherBtn');
+  if(hasAutoSubmittedToTeacher && !openConfirmationTab){return;}
+  hasAutoSubmittedToTeacher=true;
+  postTeacherForm(); // fetch with retry handles UI
+  if(btn){btn.textContent='Already Submitted';btn.disabled=true;btn.style.opacity='.7';btn.style.cursor='default';}
+}
+</script></body></html>

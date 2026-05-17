@@ -79,7 +79,12 @@ strong{font-weight:700}
   .score #finalPct{font-size:2em}
 }
 </style></head><body>
-<div class="card" id="introCard"><h1>Conversation Class 14 Homework</h1><p>Week 7 • Consumer Rights • Return Policies</p><label>Your Full Name</label><input id="studentName" placeholder="Enter your name" type="text"/><input type="hidden" id="teacherName" value=""/><label>Your Class</label><select id="className" onchange="setTeacher(this)"><option value="">-- Select your class --</option><option value="Conversation Session 14 - 3094" data-teacher="Laura Ebel">Conversation Session 14 - 3094 (Mon/Wed 9:00 AM)</option></select><button onclick="startQuiz()">Start Homework</button></div>
+<div class="card" id="introCard"><h1>Conversation Class 14 Homework</h1><p>Week 7 • Consumer Rights • Return Policies</p><label>Your Full Name</label><input id="studentName" placeholder="Enter your name" type="text"/><input type="hidden" id="teacherName" value=""/><label>Your Class</label><select id="className" onchange="setTeacher(this)">
+<option value="">-- Select your class --</option>
+<optgroup label="Laura Ebel">
+<option value="3094" data-teacher="Laura Ebel">3094 - Mon/Wed 9:00 AM (Laura)</option>
+</optgroup>
+</select><button onclick="startQuiz()">Start Homework</button></div>
 <div class="hidden" id="main">
 <div class="card" id="s1"><h2>1. Conversation Awareness</h2><p><strong>Understanding Return Policies</strong></p><p>Return policies explain when and how customers can return products after buying them.</p><p>Some stores offer refunds, while others provide store credit or exchanges.</p><p>Keeping receipts and original packaging can make returns easier, especially when there is a return window or a warranty.</p><div id="readingQuestions"></div><button onclick="checkS1()">Continue</button></div>
 <div class="card hidden" id="s2"><h2>2. Expressions in Context</h2><div id="wordBank"></div><div id="vocabDrops"></div><button onclick="checkS2()">Continue</button></div>
